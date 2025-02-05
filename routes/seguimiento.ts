@@ -53,7 +53,49 @@ seguimientoRouter.post("/addseguimiento", async (context: Context) => {
         context.response.status = 500;
         context.response.body = { message: "Error, consultar con el administrador", error: error.message };
     }
+});
 
+seguimientoRouter.post("/changestatus", async (context: Context) => {
+    try {
+        const body = await context.request.body();
+        const value = await body.value;
+        if (!value) {
+            context.response.status = 400;
+            context.response.body = { message: "Invalid request body" };
+            return;
+        }
+        const { id, status } = value;
+        const last_update = new Date();
+        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(id) }, { $set: { status: status, last_update: last_update } });
+        context.response.status = 201;
+        context.response.body = { message: "Registro modificado", registro };
+
+    } catch (error: any) {
+        context.response.status = 500;
+        context.response.body = { message: "Error, consultar con el administrador", error: error.message };
+    }
+});
+
+seguimientoRouter.post("/addinmueble", async (context: Context) => {
+    try {
+        const body = await context.request.body();
+        const value = await body.value;
+        if (!value) {
+            context.response.status = 400;
+            context.response.body = { message: "Invalid request body" };
+            return;
+        }
+        const { id, idInmueble } = value;
+        const last_update = new Date();
+        const arregloInmuebles = idInmueble.split(",");
+        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(id) }, { $push: { inmuebles_linked: arregloInmuebles }, $set: { last_update: last_update } });
+        context.response.status = 201;
+        context.response.body = { message: "Inmueble agregado", registro };
+
+    } catch (error: any) {
+        context.response.status = 500;
+        context.response.body = { message: "Error, consultar con el administrador", error: error.message };
+    }
 });
 
 export default seguimientoRouter;

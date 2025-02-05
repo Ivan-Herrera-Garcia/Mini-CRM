@@ -2,6 +2,7 @@ import { Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import asesorRouter from "./asesor.ts";
 import seguimientoRouter from "./seguimiento.ts";
 import inmuebleRouter from "./inmuebles.ts";
+import usersRouter from "./users.ts";
 
 const router = new Router();
 
@@ -18,5 +19,8 @@ router.use(seguimientoRouter.allowedMethods());
 
 router.use(inmuebleRouter.routes());
 router.use(inmuebleRouter.allowedMethods());
+
+router.use(usersRouter.routes());
+router.use(usersRouter.allowedMethods());
 
 export default router;
