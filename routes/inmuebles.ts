@@ -49,7 +49,27 @@ inmuebleRouter.post("/addinmueble", async (context: Context) => {
         context.response.status = 500;
         context.response.body = { message: "Error, consultar con el administrador", error: error.message };
     }
+});
 
+inmuebleRouter.post("/editinmueble", async (context: Context) => {
+    try {
+        const body = await context.request.body();
+        const value = await body.value;
+        if (!value) {
+            context.response.status = 400;
+            context.response.body = { message: "Invalid request body" };
+            return;
+        }
+        var { id, title, price, operation, idAsesor, urlInmueble } = value;
+        idAsesor = new Bson.ObjectId(idAsesor);
+        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(id) }, { $set: { title, price, operation, idAsesor, urlInmueble } });
+        context.response.status = 201;
+        context.response.body = { message: "Registro actualizado", registro };
+
+    } catch (error: any) {
+        context.response.status = 500;
+        context.response.body = { message: "Error, consultar con el administrador", error: error.message };
+    }
 });
 
 export default inmuebleRouter;
