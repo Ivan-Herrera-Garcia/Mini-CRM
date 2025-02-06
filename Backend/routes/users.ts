@@ -89,7 +89,7 @@ usersRouter.post("/login", async (context: Context) => {
             context.response.body = { message: "Invalid request body" };
             return;
         }
-
+        console.log(body);
         const { username, password } = body;
 
         // Buscar el usuario en la base de datos
@@ -111,6 +111,7 @@ usersRouter.post("/login", async (context: Context) => {
         context.response.status = 200;
         context.response.body = { message: "Inicio de sesión exitoso", userId: user._id };
     } catch (error) {
+        console.log(error);
         context.response.status = 500;
         context.response.body = { message: "Error en el servidor", error: error };
     }
