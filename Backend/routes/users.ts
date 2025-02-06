@@ -94,7 +94,8 @@ usersRouter.post("/login", async (context: Context) => {
 
         // Buscar el usuario en la base de datos
         const user = await registroCollection.findOne({ username });
-        if (!user) {
+        console.log(user);
+        if (user == undefined || user == null) {
             context.response.status = 404;
             context.response.body = { message: "Usuario no encontrado" };
             return;
