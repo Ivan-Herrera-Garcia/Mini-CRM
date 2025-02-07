@@ -4,7 +4,14 @@ import { db } from "../db.ts"; // Importar la conexión a MongoDB
 
 const usersRouter = new Router();
 const registroCollection = db.collection("users");
+const registroAsesorCollection = db.collection("asesor");
 const { getQuery } = helpers;
+
+
+async function getUserInfo (id: string) {
+    const userInfo = await registroAsesorCollection.findOne({ _id: new Bson.ObjectId(id) });
+    return userInfo;
+}
 
 // Función para generar hash con clave "fornite"
 async function hashPassword(password: string): Promise<string> {
@@ -115,9 +122,9 @@ usersRouter.post("/login", async (context) => {
             context.response.body = { message: "Contraseña incorrecta" };
             return;
         }
-
+        const userData = await getUserInfo(user._id);
         context.response.status = 200;
-        context.response.body = { message: "Inicio de sesión exitoso", userId: user._id };
+        context.response.body = { message: "Inicio de sesión exitoso", data:userData };
     } catch (error) {
         console.error("Error en /login:", error);
         context.response.status = 500;
