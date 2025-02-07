@@ -1,41 +1,56 @@
-import { hash, compare } from "https://deno.land/x/bcrypt@v0.3.0/mod.ts";
 import { Router, Context, helpers } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { Bson } from "https://deno.land/x/mongo@v0.31.1/mod.ts"; // Importa Bson para usar ObjectId
 import { db } from "../db.ts"; // Importar la conexión a MongoDB
-
 
 const usersRouter = new Router();
 const registroCollection = db.collection("users");
 const { getQuery } = helpers;
 
-// Obtener todos los asesores
+// Función para generar hash con clave "fornite"
+async function hashPassword(password: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + "fornite"); // Concatenamos la clave secreta
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(hashBuffer))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+}
+
+// Función para verificar el hash
+async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+    const newHash = await hashPassword(password);
+    return newHash === hashedPassword;
+}
+
+// Obtener todos los usuarios (sin contraseñas)
 usersRouter.get("/user", async (context: Context) => {
-  const registros = await registroCollection.find();
-  const registrosArray = await registros.map((registro: any) => { // Mapear los registros para que no se muestre la contraseña
-    const { password, ...rest } = registro;
-    return rest;
-  });
-  context.response.body = registrosArray;
+    const registros = await registroCollection.find();
+    const registrosArray = await registros.map((registro: any) => {
+        const { password, ...rest } = registro; // Ocultar contraseña
+        return rest;
+    });
+    context.response.body = registrosArray;
 });
 
+// Obtener usuario por ID
 usersRouter.get("/user/:id", async (context: Context) => {
     const { id } = getQuery(context, { mergeParams: true });
     try {
-        var registro = await registroCollection.find({ _id: new Bson.ObjectId(id)});
-        const registroId = await registro.toArray();
-        if (registroId.length != 0) {
-          context.response.body = registroId;
+        const registro = await registroCollection.findOne({ _id: new Bson.ObjectId(id) });
+        if (registro) {
+            delete registro.password; // Ocultar contraseña
+            context.response.body = registro;
         } else {
             context.response.status = 404;
             context.response.body = { message: "Registro no encontrado" };
         }
-    }
-    catch (error: any) {
-            context.response.status = 500;
-            context.response.body = { message: "Error, consultar con el administrador", error: error.message };
+    } catch (error: any) {
+        context.response.status = 500;
+        context.response.body = { message: "Error en el servidor", error: error.message };
     }
 });
 
+// Registrar usuario
 usersRouter.post("/adduser", async (context) => {
     try {
         const body = await context.request.body({ type: "json" }).value;
@@ -56,9 +71,9 @@ usersRouter.post("/adduser", async (context) => {
         }
 
         // Cifrar la contraseña antes de guardarla
-        const hashedPassword = await hash(password);
+        const hashedPassword = await hashPassword(password);
 
-        // Insertar el usuario en la base de datos
+        // Insertar usuario en la base de datos
         const insertId = await registroCollection.insertOne({
             username,
             password: hashedPassword,
@@ -73,7 +88,7 @@ usersRouter.post("/adduser", async (context) => {
     }
 });
 
-// 📌 Ruta para iniciar sesión
+// Iniciar sesión
 usersRouter.post("/login", async (context) => {
     try {
         const body = await context.request.body({ type: "json" }).value;
@@ -85,7 +100,7 @@ usersRouter.post("/login", async (context) => {
 
         const { username, password } = body;
 
-        // Buscar el usuario en la base de datos
+        // Buscar usuario en la base de datos
         const user = await registroCollection.findOne({ username });
         if (!user) {
             context.response.status = 404;
@@ -94,7 +109,7 @@ usersRouter.post("/login", async (context) => {
         }
 
         // Comparar la contraseña ingresada con la almacenada
-        const passwordMatch = await compare(password, user.password);
+        const passwordMatch = await verifyPassword(password, user.password);
         if (!passwordMatch) {
             context.response.status = 401;
             context.response.body = { message: "Contraseña incorrecta" };
