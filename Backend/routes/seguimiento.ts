@@ -76,7 +76,7 @@ seguimientoRouter.post("/changestatus", async (context: Context) => {
     }
 });
 
-seguimientoRouter.post("/addinmueble", async (context: Context) => {
+seguimientoRouter.post("/seguimiento/addinmueble", async (context: Context) => {
     try {
         const body = await context.request.body();
         const value = await body.value;
