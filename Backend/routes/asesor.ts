@@ -50,4 +50,30 @@ asesorRouter.post("/addasesor", async (context: Context) => {
     }
 });
 
+asesorRouter.post("/editasesor", async (context: Context) => {
+    try {
+        const body = await context.request.body();
+        const value = await body.value;
+        if (!value) {
+            context.response.status = 400;
+            context.response.body = { message: "Invalid request body" };
+            return;
+        }
+        var { _id, name, phoneNumber } = value;
+        const isExist = await registroCollection.findOne({ _id: new Bson.ObjectId(_id) });
+        if (!isExist) {
+            context.response.status = 400;
+            context.response.body = { message: "Registro no existe" };
+            return;
+        }
+        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(_id) }, { $set: { name, phoneNumber } });
+        context.response.status = 200;
+        context.response.body = { message: "Registro actualizado", registro };
+
+    } catch (error: any) {
+        context.response.status = 500;
+        context.response.body = { message: "Error, consultar con el administrador", error: error.message };
+    }
+});
+
 export default asesorRouter;
