@@ -67,21 +67,22 @@ usersRouter.post("/adduser", async (context) => {
             return;
         }
 
-        const { username, password } = body;
+        const { _id, username, password } = body;
 
         // Verificar si el usuario ya existe
-        const userExists = await registroCollection.findOne({ username });
-        if (userExists) {
+        const existingUser = await registroCollection.findOne({ _id: new Bson.ObjectId(_id) });
+        if (existingUser) {
             context.response.status = 409;
-            context.response.body = { message: "El usuario ya existe" };
+            context.response.body = { message: "Usuario ya registrado" };
             return;
         }
 
-        // Cifrar la contraseña antes de guardarla
+        // Encriptar la contraseña
         const hashedPassword = await hashPassword(password);
 
         // Insertar usuario en la base de datos
-        const insertId = await registroCollection.insertOne({
+        const { $oid: insertId } = await registroCollection.insertOne({
+            _id: new Bson.ObjectId(_id),
             username,
             password: hashedPassword,
         });
