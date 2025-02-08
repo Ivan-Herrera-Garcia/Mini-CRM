@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 
-export default function EditarInmueble(inmueble) {
+export default function NuevoInmueble(asesores) {
     const [error, setError] = useState(null);
-    //Para editar
-    const [title, setTitle] = useState(inmueble.inmueble.title);
-    const [urlInmueble, setUrlInmueble] = useState(inmueble.inmueble.urlInmueble);
-    const [price, setPrice] = useState(inmueble.inmueble.price);
-    const [operation, setOperation] = useState(inmueble.inmueble.operation);
+    const [title, setTitle] = useState("");
+    const [urlInmueble, setUrlInmueble] = useState("");
+    const [price, setPrice] = useState("");
+    const [operation, setOperation] = useState("venta");
+    const [idAsesor, setIdAsesor] = useState(asesores.asesores[0]._id);
 
-    const handleEditar = async () => {
+    const handleCrear = async () => {
         try {
-            const res = await fetch(`https://mini-crm-dev.deno.dev/editinmueble`, {
+            const res = await fetch(`https://mini-crm-dev.deno.dev/addinmueble`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    _id: inmueble.inmueble._id,
                     title: title,
                     price: parseInt(price, 10),
                     operation: operation,
-                    idAsesor: inmueble.inmueble.idAsesor,
+                    idAsesor: idAsesor,
                     urlInmueble: urlInmueble
                 })
             });
@@ -50,18 +49,35 @@ export default function EditarInmueble(inmueble) {
                                 <option value="venta">Venta</option>
                                 <option value="renta">Renta</option>
                             </select>
+                            
+                            <label className="block text-sm font-medium text-gray-700">Asesor</label>
+                            <select value={idAsesor} onChange={(e) => setIdAsesor(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md">
+                                {
+                                    asesores.asesores.map((asesor) => (
+                                        <option key={asesor._id} value={asesor._id}>{asesor.name}</option>
+                                    ))
+                                }
+                            </select>
                         </div>
                     </div>
-                    <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditar()}>Editar Inmueble</button>
+                    <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleCrear()}>Editar Inmueble</button>
         </div>
     );
 }
 
 export async function getServerSideProps(context) {
-    const res = await fetch(`https://mini-crm-dev.deno.dev/inmuebles/${context.params.params}`);
-    const inmueble = await res.json();
+    const response = await fetch("https://mini-crm-dev.deno.dev/asesor", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+    });
+
+    const text = await response.text(); // Obtener la respuesta en texto
+
+    const fixedJson = `[${text.replace(/}{/g, "},{")}]`;
+
+    const data = JSON.parse(fixedJson);
 
     return {
-        props: { inmueble: inmueble[0] },
+        props: { asesores: data },
     }
 }
