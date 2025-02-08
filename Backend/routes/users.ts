@@ -68,9 +68,9 @@ usersRouter.post("/adduser", async (context) => {
         }
 
         const { _id, username, password } = body;
-
+        const idAsesor = new Bson.ObjectId(_id);
         // Verificar si el usuario ya existe
-        const existingUser = await registroCollection.findOne({ _id: new Bson.ObjectId(_id) });
+        const existingUser = await registroCollection.findOne({ idAsesor: idAsesor });
         if (existingUser) {
             context.response.status = 409;
             context.response.body = { message: "Usuario ya registrado" };
@@ -81,20 +81,22 @@ usersRouter.post("/adduser", async (context) => {
         const hashedPassword = await hashPassword(password);
 
         // Insertar usuario en la base de datos
-        const { $oid: insertId } = await registroCollection.insertOne({
-            _id: new Bson.ObjectId(_id),
+        const result = await registroCollection.insertOne({
             username,
             password: hashedPassword,
+            idAsesor: idAsesor,
         });
 
         context.response.status = 201;
-        context.response.body = { message: "Usuario registrado", userId: insertId };
+        context.response.body = { message: "Usuario registrado", user: result };
     } catch (error) {
         console.error("Error en /adduser:", error);
         context.response.status = 500;
         context.response.body = { message: "Error en el servidor" };
     }
 });
+
+
 
 // Iniciar sesión
 usersRouter.post("/login", async (context) => {
