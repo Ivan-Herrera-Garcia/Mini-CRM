@@ -60,10 +60,15 @@ inmuebleRouter.post("/editinmueble", async (context: Context) => {
             context.response.body = { message: "Invalid request body" };
             return;
         }
-        var { id, title, price, operation, idAsesor, urlInmueble } = value;
-        idAsesor = new Bson.ObjectId(idAsesor);
-        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(id) }, { $set: { title, price, operation, idAsesor, urlInmueble } });
-        context.response.status = 201;
+        var { _id, title, price, operation, idAsesor, urlInmueble } = value;
+        const isExist = await registroCollection.findOne({ _id: new Bson.ObjectId(_id) });
+        if (!isExist) {
+            context.response.status = 400;
+            context.response.body = { message: "Registro no existe" };
+            return;
+        }
+        const registro = await registroCollection.updateOne({ _id: new Bson.ObjectId(_id) }, { $set: { title, price, operation, idAsesor: new Bson.ObjectId(idAsesor), urlInmueble } });
+        context.response.status = 200;
         context.response.body = { message: "Registro actualizado", registro };
 
     } catch (error: any) {
