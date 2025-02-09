@@ -125,7 +125,7 @@ usersRouter.post("/login", async (context) => {
             context.response.body = { message: "Contraseña incorrecta" };
             return;
         }
-        const userData = await getUserInfo(user._id);
+        const userData = await getUserInfo(user.idAsesor);
         context.response.status = 200;
         context.response.body = { message: "Inicio de sesión exitoso", data:userData };
     } catch (error) {
