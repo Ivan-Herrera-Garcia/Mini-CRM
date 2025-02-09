@@ -4,7 +4,7 @@ export default function NuevoUsuario(asesores) {
     const [error, setError] = useState(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [asesor, setAsesor] = useState(asesores.asesores[0]._id);
+    const [asesor, setAsesor] = useState(asesores.length > 0 ? asesores.asesores[0]._id : "");
 
     const handleNuevoUsuario = async () => {
         console.log(asesor);
@@ -33,6 +33,8 @@ export default function NuevoUsuario(asesores) {
 
     return (
         <div>
+            { asesores.asesores.length === 0 ?  <p>No hay asesores disponibles</p> :
+            <>
             <h1>Nuevo Usuario</h1>
             {error && <p style={{ color: "red" }}>Error: {error}</p>}
             <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -53,6 +55,7 @@ export default function NuevoUsuario(asesores) {
                 </div>
             </div>
             <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleNuevoUsuario()}>Crear Usuario</button>
+                        </>}
         </div>
     )
 }
