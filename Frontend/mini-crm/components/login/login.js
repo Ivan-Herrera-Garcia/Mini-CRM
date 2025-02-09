@@ -39,6 +39,7 @@ export default function Login() {
               document.cookie = `crmuserdata=${encodedData}; max-age=${72 * 60 * 60}; path=/; Secure`;
   
               console.log("Cookie guardada correctamente.");
+              window.location.reload();
           } else {
               console.error("Error en el login:", data.message);
           }

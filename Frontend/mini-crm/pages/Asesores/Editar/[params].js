@@ -20,7 +20,11 @@ export default function EditarAsesor(asesor) {
                 })
             });
             const data = await res.json();
-            console.log(data);
+            if (data && data != null) {
+                window.location.href = "/Asesores";
+            } else {
+                setError(data.error);
+            }
         } catch (error) {
             setError(error);
         }

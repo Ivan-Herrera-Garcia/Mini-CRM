@@ -11,7 +11,9 @@ export default function Menu () {
             <div className="grid grid-cols-2 gap-4 w-96">
                 {items.map((item, index) => (
                     <div key={index} className={`${item.bgColor} text-white p-6 rounded-2xl text-center text-lg font-semibold shadow-lg`}>
-                        {item.name}
+                        <a href={`/${item.name}`}>
+                            {item.name}
+                        </a>
                     </div>
                 ))}
             </div>

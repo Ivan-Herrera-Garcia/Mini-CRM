@@ -25,6 +25,11 @@ export default function EditarInmueble(inmueble) {
                 })
             });
             const data = await res.json();
+            if (data && data != null) {
+                window.location.href = "/Inmuebles";
+            } else {
+                setError(data.error);
+            }
         } catch (error) {
             setError(error);
         }
@@ -52,7 +57,7 @@ export default function EditarInmueble(inmueble) {
                             </select>
                         </div>
                     </div>
-                    <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditar()}>Editar Inmueble</button>
+                    <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditar()}>Actualizar Inmueble</button>
         </div>
     );
 }
