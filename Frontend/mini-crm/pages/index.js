@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import Login from "../components/login/login";
 import Menu from "../components/menu/menu";
