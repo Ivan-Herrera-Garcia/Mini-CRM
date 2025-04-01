@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import Link from "next/link";
 
 export default function EditarAsesor(asesor) {
     const [name, setName] = useState(asesor.asesor.name);
@@ -20,7 +20,7 @@ export default function EditarAsesor(asesor) {
                 })
             });
             const data = await res.json();
-            if (data && data != null) {
+            if (data) {
                 window.location.href = "/Asesores";
             } else {
                 setError(data.error);
@@ -28,32 +28,61 @@ export default function EditarAsesor(asesor) {
         } catch (error) {
             setError(error);
         }
-    }
+    };
 
     return (
-        <div>
-            <h1>Asesores</h1>
-            <h2>Editar</h2>
-            <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
-                <input type="text" className="mt-1 p-2 w-full border border-gray-300 rounded-md" value={name} onChange={(e) => setName(e.target.value)} />
-                <label className="block text-sm font-medium text-gray-700">Teléfono</label>
-                <input type="text" className="mt-1 p-2 w-full border border-gray-300 rounded-md" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-            </div>
-            <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditar()}>Editar Asesor</button>
+        <div className="min-h-screen flex flex-col bg-white text-gray-900">
+            {/* Header */}
+            <header className="bg-blue-600 text-white p-4 text-center text-lg font-bold">
+                <h1>Editar Asesor</h1>
+            </header>
+
+            {/* Contenido principal */}
+            <main className="flex-grow flex items-center justify-center p-4">
+                <div className="max-w-sm w-full bg-white border border-gray-300 rounded-lg shadow-md p-6">
+                    <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input 
+                        type="text" 
+                        className="mt-1 p-2 w-full border border-gray-300 rounded-md" 
+                        value={name} 
+                        onChange={(e) => setName(e.target.value)} 
+                    />
+                    
+                    <label className="block text-sm font-medium text-gray-700 mt-3">Teléfono</label>
+                    <input 
+                        type="text" 
+                        className="mt-1 p-2 w-full border border-gray-300 rounded-md" 
+                        value={phoneNumber} 
+                        onChange={(e) => setPhoneNumber(e.target.value)} 
+                    />
+                    
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                    
+                    <button 
+                        className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                        onClick={handleEditar}
+                    >
+                        Guardar cambios
+                    </button>
+                </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="bg-blue-600 text-white text-center p-4 text-sm">
+                <p>© {new Date().getFullYear()} Mini CRM - Todos los derechos reservados</p>
+            </footer>
         </div>
     );
 }
 
 export async function getServerSideProps(context) {
     const idAsesor = context.params.params;
-    const response = await fetch("https://mini-crm-dev.deno.dev/asesor/"+idAsesor, {
+    const response = await fetch(`https://mini-crm-dev.deno.dev/asesor/${idAsesor}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     });
-
+    
     const asesor = await response.json();
-    console.log(asesor);
     
     return { props: { asesor: asesor[0] } };
 }
