@@ -27,19 +27,16 @@ export default function Login() {
           if (response.ok && data) {
               // Crear un objeto con los datos
               const userData = {
-                  userId: data.data._id,
-                  name: data.data.name,
-                  phoneNumber: data.data.phoneNumber
-              };
-              console.log(userData)
-              // Convertir el objeto en string JSON y codificarlo en Base64
-              const encodedData = btoa(JSON.stringify(userData));
-              console.log(encodedData)
-              // Guardar la cookie con la información en Base64
-              document.cookie = `crmuserdata=${encodedData}; max-age=${72 * 60 * 60}; path=/; Secure`;
-  
-              console.log("Cookie guardada correctamente.");
-              window.location.reload();
+                name: password, 
+            };
+            
+            // Convertir a JSON y codificar en Base64
+            const encodedData = btoa(JSON.stringify(userData));
+            
+            // Guardar la cookie correctamente
+            document.cookie = `crmuserdata=${encodedData}; max-age=${72 * 60 * 60}; path=/; Secure`;
+            
+            console.log("Cookie guardada correctamente.");
           } else {
               console.error("Error en el login:", data.message);
           }
@@ -49,24 +46,30 @@ export default function Login() {
   }
   
     return (
-      <div>
-        <h1>Login</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button
-          onClick={(e) => 
-            handleLogin()
-          }>
-          Login
-        </button>
-      </div>
+      <div className="flex items-center justify-center min-h-screen bg-blue-100 p-4">
+            <div className="w-full max-w-sm bg-white shadow-lg rounded-2xl p-6">
+                <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">Iniciar Sesión</h1>
+                <input
+                    type="text"
+                    placeholder="Usuario"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 mb-3 text-blue-800"
+                />
+                <input
+                    type="password"
+                    placeholder="Contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 mb-3 text-black"
+                />
+                <button
+                    onClick={handleLogin}
+                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
+                >
+                    Ingresar
+                </button>
+            </div>
+        </div>
     );
 }

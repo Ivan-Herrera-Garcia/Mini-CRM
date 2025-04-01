@@ -82,6 +82,8 @@ export async function getServerSideProps(context) {
 
     const data = JSON.parse(fixedJson);
 
+    console.log(data);
+
     return {
         props: { asesores: data },
     }
