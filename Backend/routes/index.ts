@@ -3,6 +3,7 @@ import asesorRouter from "./asesor.ts";
 import seguimientoRouter from "./seguimiento.ts";
 import inmuebleRouter from "./inmuebles.ts";
 import usersRouter from "./users.ts";
+import configuracionRouter from "./configuracion.ts";
 
 const router = new Router();
 
@@ -22,5 +23,8 @@ router.use(inmuebleRouter.allowedMethods());
 
 router.use(usersRouter.routes());
 router.use(usersRouter.allowedMethods());
+
+router.use(configuracionRouter.routes());
+router.use(configuracionRouter.allowedMethods());
 
 export default router;
