@@ -34,7 +34,7 @@ export default function NuevoAsesor() {
             {/* Header */}
             <header className="bg-blue-600 text-white py-4 shadow-md">
                 <div className="container mx-auto flex justify-between items-center px-6">
-                    <h1 className="text-lg font-semibold">Propiedades México</h1>
+                    <h1 className="text-lg font-semibold">Mini CRM</h1>
                     
                     {/* Icono de menú para móviles */}
                     <button className="lg:hidden text-white text-2xl">☰</button>
@@ -97,7 +97,7 @@ export default function NuevoAsesor() {
 
             {/* Footer */}
             <footer className="bg-blue-600 text-white text-center py-4 mt-6 shadow-md">
-                <p className="text-sm">© 2025 Propiedades México. Todos los derechos reservados.</p>
+                <p className="text-sm">© 2025 Mini CRM. Todos los derechos reservados.</p>
             </footer>
         </div>
     );

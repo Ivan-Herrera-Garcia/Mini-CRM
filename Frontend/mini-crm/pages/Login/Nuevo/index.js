@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import Link from "next/link";
 
-export default function NuevoUsuario(asesores) {
+export default function NuevoUsuario({ asesores }) {
     const [error, setError] = useState(null);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [asesor, setAsesor] = useState(asesores.length > 0 ? asesores.asesores[0]._id : "");
+    const [asesor, setAsesor] = useState(asesores.length > 0 ? asesores[0]._id : "");
 
     const handleNuevoUsuario = async () => {
-        console.log(asesor);
         try {
             const res = await fetch(`https://mini-crm-dev.deno.dev/adduser`, {
                 method: 'POST',
@@ -29,60 +29,85 @@ export default function NuevoUsuario(asesores) {
         } catch (error) {
             setError(error);
         }
-    }
+    };
 
     return (
-        <div>
-            { asesores.asesores.length === 0 ?  <p>No hay asesores disponibles</p> :
-            <>
-            <h1>Nuevo Usuario</h1>
-            {error && <p style={{ color: "red" }}>Error: {error}</p>}
-            <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                <div className="p-4">
-                    <label className="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md" />
-
-                    <label className="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md" />
-
-                    <label className="block text-sm font-medium text-gray-700">Asesor</label>
-                    <select value={asesor} onChange={(e) => setAsesor(e.target.value)} className="mt-1 p-2 w-full border border-gray-300 rounded-md">
-                        {asesores.asesores.map((asesor) => (
-                            <option key={asesor._id} value={asesor._id}>{asesor.name}</option>
-                        ))}
-                    </select>
-
+        <div className="min-h-screen flex flex-col bg-blue-100">
+            {/* Header */}
+            <header className="bg-blue-600 text-white py-4 shadow-md">
+                <div className="container mx-auto flex justify-between items-center px-6">
+                    <h1 className="text-lg font-semibold">Propiedades México</h1>
+                    <nav className="hidden lg:flex space-x-6">
+                        <Link href="/" className="text-lg font-semibold text-white hover:underline">Home</Link>
+                        <Link href="/Inmuebles" className="text-lg font-semibold text-white hover:underline">Inmuebles</Link>
+                        <Link href="/Seguimientos" className="text-lg font-semibold text-white hover:underline">Seguimientos</Link>
+                        <Link href="/Configuración" className="text-lg font-semibold text-white hover:underline">Configuración</Link>
+                    </nav>
                 </div>
-            </div>
-            <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleNuevoUsuario()}>Crear Usuario</button>
-                        </>}
+            </header>
+
+            <main className="flex-grow flex flex-col items-center justify-center p-6">
+                {asesores.length === 0 ? (
+                    <p className="text-red-600">No hay asesores disponibles</p>
+                ) : (
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+                        <h1 className="text-2xl font-semibold mb-4">Nuevo Usuario</h1>
+                        {error && <p className="text-red-500">Error: {error}</p>}
+
+                        <label className="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+                        <input 
+                            type="text" 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md" 
+                        />
+
+                        <label className="block text-sm font-medium text-gray-700 mt-4">Contraseña</label>
+                        <input 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md" 
+                        />
+
+                        <label className="block text-sm font-medium text-gray-700 mt-4">Asesor</label>
+                        <select 
+                            value={asesor} 
+                            onChange={(e) => setAsesor(e.target.value)} 
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                        >
+                            {asesores.map((asesor) => (
+                                <option key={asesor._id} value={asesor._id}>{asesor.name}</option>
+                            ))}
+                        </select>
+
+                        <button 
+                            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                            onClick={handleNuevoUsuario}
+                        >
+                            Crear Usuario
+                        </button>
+                    </div>
+                )}
+            </main>
+
+            {/* Footer */}
+            <footer className="bg-blue-600 text-white text-center py-4 mt-6 shadow-md">
+                <p className="text-sm">© 2025 Propiedades México. Todos los derechos reservados.</p>
+            </footer>
         </div>
-    )
+    );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
     const res = await fetch(`https://mini-crm-dev.deno.dev/user`);
     const users = await res.json();
-
-    console.log(users);
-
-    const asesor = await fetch(`https://mini-crm-dev.deno.dev/asesor`);
-    const asesores = await asesor.text();
-    const fixedJson = `[${asesores.replace(/}{/g, "},{")}]`;
-
+    const asesorRes = await fetch(`https://mini-crm-dev.deno.dev/asesor`);
+    const asesoresText = await asesorRes.text();
+    const fixedJson = `[${asesoresText.replace(/}{/g, "},{")}]`;
     const listaAsesores = JSON.parse(fixedJson);
-    console.log(listaAsesores);
 
-    const asesorSinUser = listaAsesores.filter((asesor) => {
-        return !users.find((user) => user.idAsesor === asesor._id);
-    });
+    const asesorSinUser = listaAsesores.filter(asesor => !users.find(user => user.idAsesor === asesor._id));
 
-    console.log(asesorSinUser);
-
-
-
-
-    return {
-        props: {asesores: asesorSinUser},
-    }
+    return { props: { asesores: asesorSinUser } };
 }

@@ -8,7 +8,7 @@ export default function Menu() {
         { name: "Inmuebles", bgColor: "bg-blue-500" },
         { name: "Asesores", bgColor: "bg-green-500" },
         { name: "Seguimientos", bgColor: "bg-yellow-500" },
-        { name: "Configuración", bgColor: "bg-red-500" },
+        { name: "Configuracion", bgColor: "bg-red-500" },
     ];
 
     return (
@@ -81,7 +81,7 @@ export default function Menu() {
 
             {/* Footer */}
             <footer className="bg-blue-600 text-white text-center py-4 mt-6 shadow-md">
-                <p className="text-sm">© 2025 Propiedades México. Todos los derechos reservados.</p>
+                <p className="text-sm">© 2025 Mini CRM. Todos los derechos reservados.</p>
             </footer>
         </div>
     );
