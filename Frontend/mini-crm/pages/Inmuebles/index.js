@@ -67,7 +67,7 @@ export default function Inmuebles() {
             {/* Header */}
             <header className="bg-blue-600 text-white py-4 shadow-md">
                 <div className="container mx-auto flex justify-between items-center px-6">
-                    <h1 className="text-lg font-semibold">Mini CRM</h1>
+                    <h1 className="text-lg font-semibold">Realty Manager</h1>
                     
                     {/* Icono de menú para móviles */}
                     <button 
@@ -88,8 +88,8 @@ export default function Inmuebles() {
                         <Link href="/Seguimientos" legacyBehavior>
                             <a className="text-lg font-semibold text-white hover:underline">Seguimientos</a>
                         </Link>
-                        <Link href="/Configuración" legacyBehavior>
-                            <a className="text-lg font-semibold text-white hover:underline">Configuración</a>
+                        <Link href="/Configuracion" legacyBehavior>
+                            <a className="text-lg font-semibold text-white hover:underline">Configuracion</a>
                         </Link>
                     </div>
                 </div>
@@ -110,8 +110,8 @@ export default function Inmuebles() {
                             <Link href="/Seguimientos" legacyBehavior>
                                 <a className="text-lg text-blue-600 hover:underline">Seguimientos</a>
                             </Link>
-                            <Link href="/Configuración" legacyBehavior>
-                                <a className="text-lg text-blue-600 hover:underline">Configuración</a>
+                            <Link href="/Configuracion" legacyBehavior>
+                                <a className="text-lg text-blue-600 hover:underline">Configuracion</a>
                             </Link>
                         </div>
                     </div>
@@ -160,7 +160,7 @@ export default function Inmuebles() {
    
             {/* Footer */}
             <footer className="bg-blue-600 text-white text-center py-4 mt-6 shadow-md">
-                <p className="text-sm">© 2025 Mini CRM. Todos los derechos reservados.</p>
+                <p className="text-sm">© 2025 Realty Manager. Todos los derechos reservados.</p>
             </footer>
         </div>
     );

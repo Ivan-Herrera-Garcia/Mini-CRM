@@ -69,7 +69,7 @@ export default function EditarAsesor(asesor) {
 
             {/* Footer */}
             <footer className="bg-blue-600 text-white text-center p-4 text-sm">
-                <p>© {new Date().getFullYear()} Mini CRM - Todos los derechos reservados</p>
+                <p>© {new Date().getFullYear()} Realty Manager - Todos los derechos reservados</p>
             </footer>
         </div>
     );

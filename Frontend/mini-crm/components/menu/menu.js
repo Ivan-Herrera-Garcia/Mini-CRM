@@ -15,7 +15,7 @@ export default function Menu() {
         <div className="min-h-screen flex flex-col bg-blue-100">
             {/* Header */}
             <header className="bg-blue-600 text-white py-4 shadow-md flex justify-between items-center px-6">
-                <h1 className="text-lg font-semibold hidden md:block">Mini CRM</h1>
+                <h1 className="text-lg font-semibold hidden md:block">Realty Manager</h1>
                 <div className="hidden md:flex space-x-6">
                     {items.map((item, index) => (
                         <a key={index} href={`/${item.name}`} className="text-lg font-semibold hover:underline">
@@ -81,7 +81,7 @@ export default function Menu() {
 
             {/* Footer */}
             <footer className="bg-blue-600 text-white text-center py-4 mt-6 shadow-md">
-                <p className="text-sm">© 2025 Mini CRM. Todos los derechos reservados.</p>
+                <p className="text-sm">© 2025 Realty Manager. Todos los derechos reservados.</p>
             </footer>
         </div>
     );
