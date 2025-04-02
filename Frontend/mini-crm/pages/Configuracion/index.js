@@ -1,19 +1,28 @@
 import Link from "next/link";
 import { useState } from "react";
+import config from "../../postcss.config.mjs";
 
-export default function Asesores({ asesores }) {
-    const [tema, setTema] = useState("azul-blanco");
-    const [titulo, setTitulo] = useState("");
-    const [descripcion, setDescripcion] = useState("");
-    const [imagen, setImagen] = useState("");
-
+export default function Asesores({ configuracion }) {
     const temas = {
-        "azul-blanco": { fondo: "#003366", texto: "#FFFFFF" },
-        "negro-gris": { fondo: "#000000", texto: "#AAAAAA" },
-        "blanco-negro": { fondo: "#FFFFFF", texto: "#000000" },
-        "gris-blanco": { fondo: "#444444", texto: "#FFFFFF" },
-        "azuloscuro-celeste": { fondo: "#1B3B6F", texto: "#A1E0FF" }
+        "azul-blanco": "#003366|#FFFFFF",
+        "negro-gris": "#000000|#AAAAAA",
+        "blanco-negro": "#FFFFFF|#000000",
+        "negro-blanco" : "#000000|#FFFFFF",
+        "gris-blanco": "#444444|#FFFFFF",
+        "azuloscuro-celeste": "#1B3B6F|#A1E0FF"
     };
+    
+    function obtenerClave(colorPrimario, colorSecundario) {
+        const valorBuscado = `${colorPrimario}|${colorSecundario}`;
+    
+        return Object.keys(temas).find(key => temas[key] === valorBuscado) || null;
+    }
+
+    const [tema, setTema] = useState(obtenerClave(configuracion[0].primaryColor, configuracion[0].secondaryColor));
+    const [titulo, setTitulo] = useState(configuracion[0].title);
+    const [descripcion, setDescripcion] = useState(configuracion[0].descripcion);
+    const [imagen, setImagen] = useState(configuracion[0].urlPicture);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -78,18 +87,19 @@ export default function Asesores({ asesores }) {
             <main className="flex-grow p-6" style={{ padding: "20px", textAlign: "start" }}>
                 {/* Sección de Tema de Colores */}
                 <section style={{ marginBottom: "20px" }}>
-                <h2>Seleccionar Tema</h2>
-                <select
-                    value={tema}
-                    onChange={(e) => setTema(e.target.value)}
-                    style={{ padding: "10px", fontSize: "16px", border: "1px solid #ccc" }}
-                >
-                    <option value="azul-blanco">Azul y Blanco</option>
-                    <option value="negro-gris">Negro y Gris</option>
-                    <option value="blanco-negro">Blanco y Negro</option>
-                    <option value="gris-blanco">Gris y Blanco</option>
-                    <option value="azuloscuro-celeste">Azul Oscuro y Celeste</option>
-                </select>
+                    <h2>Seleccionar Tema</h2>
+                    <select
+                        value={tema}
+                        onChange={(e) => setTema(e.target.value)}
+                        style={{ padding: "10px", fontSize: "16px", border: "1px solid #ccc" }}
+                    >
+                        <option value="negro-blanco">Negro y Blanco</option>
+                        <option value="azul-blanco">Azul y Blanco</option>
+                        <option value="negro-gris">Negro y Gris</option>
+                        <option value="blanco-negro">Blanco y Negro</option>
+                        <option value="gris-blanco">Gris y Blanco</option>
+                        <option value="azuloscuro-celeste">Azul Oscuro y Celeste</option>
+                    </select>
                 </section>
 
                 {/* Sección de Título */}
@@ -126,6 +136,31 @@ export default function Asesores({ asesores }) {
                 />
                 {imagen && <img src={imagen} alt="Imagen Previa" style={{ marginTop: "10px", maxWidth: "100%", height: "auto" }} />}
                 </section>
+                <button
+                    onClick={async () => {
+                        console.log(tema);
+                        console.log(temas[tema]);
+                        const response = await fetch("https://mini-crm-dev.deno.dev/editconfiguracion", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                _id: configuracion[0]._id,
+                                primaryColor: temas[tema].split("|")[0],
+                                secondaryColor: temas[tema].split("|")[1],
+                                title: titulo,
+                                descripcion: descripcion,
+                                urlPicture: imagen
+                            })
+                        });
+                        const data = await response.text();
+                        if (data && data != null) {
+                            window.location.href = "/Configuracion";
+                        } else {
+                            alert("Error al actualizar la configuración");
+                        }
+                    }}
+                    style={{ padding: "10px 20px", backgroundColor: "#007BFF", color: "#fff", border: "none", borderRadius: "5px" }}
+                >Actualizar Configuración</button>
             </main>
 
            
@@ -138,7 +173,7 @@ export default function Asesores({ asesores }) {
 }
 
 export async function getServerSideProps() {
-    const response = await fetch("https://mini-crm-dev.deno.dev/asesor", {
+    const response = await fetch("https://mini-crm-dev.deno.dev/configuracion", {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     });
@@ -148,6 +183,6 @@ export async function getServerSideProps() {
     const fixedJson = `[${text.replace(/}{/g, "},{")}]`; // Arreglar formato
 
     const data = JSON.parse(fixedJson);
-    
-    return { props: { asesores: data } };
+
+    return { props: { configuracion: data } };
 }
