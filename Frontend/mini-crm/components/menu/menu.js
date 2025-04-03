@@ -30,7 +30,7 @@ export default function Menu({config}) {
                 <h1 className="text-lg font-semibold hidden md:block">{titulo}</h1>
                 <div className="hidden md:flex space-x-6">
                     {items.map((item, index) => (
-                        <a key={index} href={`/${item.name}`} className="text-lg font-semibold hover:underline">
+                        <a key={index} href={`/${item.name.replaceAll("ó", "o")}`} className="text-lg font-semibold hover:underline">
                             {item.name}
                         </a>
                     ))}
