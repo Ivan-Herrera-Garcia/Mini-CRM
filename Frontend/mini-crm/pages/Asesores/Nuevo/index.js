@@ -91,7 +91,7 @@ export default function NuevoAsesor({config}) {
                             <a className="text-lg font-semibold text-white hover:underline">Inmuebles</a>
                         </Link>
                         <Link href="/Configuracion" legacyBehavior>
-                            <a className="text-lg font-semibold text-white hover:underline">Configuracion</a>
+                            <a className="text-lg font-semibold text-white hover:underline">Configuración</a>
                         </Link>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export default function NuevoAsesor({config}) {
                                 <a className="text-lg text-gray-800 hover:underline">Inmuebles</a>
                             </Link>
                             <Link href="/Configuracion" legacyBehavior>
-                                <a className="text-lg text-gray-800 hover:underline">Configuracion</a>
+                                <a className="text-lg text-gray-800 hover:underline">Configuración</a>
                             </Link>
                         </div>
                     </div>

@@ -89,7 +89,7 @@ export default function Inmuebles() {
                             <a className="text-lg font-semibold text-white hover:underline">Seguimientos</a>
                         </Link>
                         <Link href="/Configuracion" legacyBehavior>
-                            <a className="text-lg font-semibold text-white hover:underline">Configuracion</a>
+                            <a className="text-lg font-semibold text-white hover:underline">Configuración</a>
                         </Link>
                     </div>
                 </div>
@@ -111,7 +111,7 @@ export default function Inmuebles() {
                                 <a className="text-lg text-blue-600 hover:underline">Seguimientos</a>
                             </Link>
                             <Link href="/Configuracion" legacyBehavior>
-                                <a className="text-lg text-blue-600 hover:underline">Configuracion</a>
+                                <a className="text-lg text-blue-600 hover:underline">Configuración</a>
                             </Link>
                         </div>
                     </div>

@@ -23,7 +23,7 @@ export default function Login({ users }) {
                         <Link href="/" className="hover:underline">Home</Link>
                         <Link href="/Inmuebles" className="hover:underline">Inmuebles</Link>
                         <Link href="/Seguimientos" className="hover:underline">Seguimientos</Link>
-                        <Link href="/Configuracion" className="hover:underline">Configuracion</Link>
+                        <Link href="/Configuracion" className="hover:underline">Configuración</Link>
                     </nav>
                 </div>
             </header>

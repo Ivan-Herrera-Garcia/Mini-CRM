@@ -70,7 +70,7 @@ export default function EditarAsesor({asesor, config}) {
 
             </Head>
             {/* Header */}
-            <header className={`bg-[${colorPrimario}] text-[${colorSecundario}] py-4 shadow-md flex justify-between items-center px-6`}>
+            <header style={{backgroundColor: colorPrimario}} className={`py-4 shadow-md flex justify-between items-center px-6`}>
                 <div className="container mx-auto flex justify-between items-center px-6">
                     <h1 className="text-lg font-semibold">{titulo}</h1>
                     
@@ -91,7 +91,7 @@ export default function EditarAsesor({asesor, config}) {
                             <a className="text-lg font-semibold text-white hover:underline">Inmuebles</a>
                         </Link>
                         <Link href="/Configuracion" legacyBehavior>
-                            <a className="text-lg font-semibold text-white hover:underline">Configuracion</a>
+                            <a className="text-lg font-semibold text-white hover:underline">Configuración</a>
                         </Link>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export default function EditarAsesor({asesor, config}) {
                                 <a className="text-lg text-gray-800 hover:underline">Inmuebles</a>
                             </Link>
                             <Link href="/Configuracion" legacyBehavior>
-                                <a className="text-lg text-gray-800 hover:underline">Configuracion</a>
+                                <a className="text-lg text-gray-800 hover:underline">Configuración</a>
                             </Link>
                         </div>
                     </div>
@@ -154,7 +154,7 @@ export default function EditarAsesor({asesor, config}) {
             </main>
 
              {/* Footer */}
-             <footer className={`bg-[${colorPrimario}] text-[${colorSecundario}] text-center py-4 mt-6 shadow-md`}>
+             <footer style={{backgroundColor: colorPrimario, color:colorSecundario}} className={`text-center py-4 mt-6 shadow-md`}>
                 <p className="text-sm">© 2025 {titulo}. Todos los derechos reservados.</p>
             </footer>
         </div>

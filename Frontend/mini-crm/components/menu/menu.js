@@ -20,14 +20,13 @@ export default function Menu({config}) {
     const items = [
         { name: "Inmuebles", bgColor: "bg-blue-500" },
         { name: "Asesores", bgColor: "bg-green-500" },
-        { name: "Seguimientos", bgColor: "bg-yellow-500" },
-        { name: "Configuracion", bgColor: "bg-red-500" },
+        { name: "Configuración", bgColor: "bg-red-500" },
     ];
 
     return (
         <div className="min-h-screen flex flex-col bg-blue-100">
             {/* Header */}
-            <header className={`bg-[${colorPrimario}] text-[${colorSecundario}] py-4 shadow-md flex justify-between items-center px-6`}>
+            <header style={{backgroundColor: colorPrimario}} className={`py-4 shadow-md flex justify-between items-center px-6`}>
                 <h1 className="text-lg font-semibold hidden md:block">{titulo}</h1>
                 <div className="hidden md:flex space-x-6">
                     {items.map((item, index) => (
@@ -94,7 +93,7 @@ export default function Menu({config}) {
             </main>
 
             {/* Footer */}
-            <footer className={`bg-[${colorPrimario}] text-[${colorSecundario}] text-center py-4 mt-6 shadow-md`}>
+            <footer style={{backgroundColor: colorPrimario, color: colorSecundario}} className={`text-center py-4 mt-6 shadow-md`}>
                 <p className="text-sm">© 2025 {titulo}. Todos los derechos reservados.</p>
             </footer>
         </div>

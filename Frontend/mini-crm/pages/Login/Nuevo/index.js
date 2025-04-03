@@ -41,7 +41,7 @@ export default function NuevoUsuario({ asesores }) {
                         <Link href="/" className="text-lg font-semibold text-white hover:underline">Home</Link>
                         <Link href="/Inmuebles" className="text-lg font-semibold text-white hover:underline">Inmuebles</Link>
                         <Link href="/Seguimientos" className="text-lg font-semibold text-white hover:underline">Seguimientos</Link>
-                        <Link href="/Configuracion" className="text-lg font-semibold text-white hover:underline">Configuracion</Link>
+                        <Link href="/Configuracion" className="text-lg font-semibold text-white hover:underline">Configuración</Link>
                     </nav>
                 </div>
             </header>
