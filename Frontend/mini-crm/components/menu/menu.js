@@ -8,7 +8,7 @@ export default function Menu({config}) {
     const [descripcion, setDescripcion] = useState(config.descripcion);
 
     useEffect(() => {
-        
+        console.log(config);
         setColorPrimario(config.primaryColor);
         setColorSecundario(config.secondaryColor);
         setTitulo(config.title);
