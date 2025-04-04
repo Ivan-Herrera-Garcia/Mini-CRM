@@ -58,7 +58,6 @@ export default function Home({config}) {
 export async function getServerSideProps() {
     const response = await fetch(`https://mini-crm-dev.deno.dev/configuracion`);
     const config = await response.text();
-    console.log(JSON.parse(config));
     return {
         props: { config: JSON.parse(config) },
     };

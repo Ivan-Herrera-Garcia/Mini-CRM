@@ -7,7 +7,7 @@ export default function Login({config, setIsLoggedIn}) {
     // const [colorSecundario, setColorSecundario] = React.useState(config.secondaryColor);
 
     // useEffect(() => {
-    //     
+    //     console.log(config);
     //     setColorPrincipal(config.primaryColor);
     //     setColorSecundario(config.secondaryColor);
     // }, [config]);
